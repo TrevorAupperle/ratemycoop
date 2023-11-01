@@ -2,8 +2,6 @@ import Head from "next/head";
 import Link from "next/link";
 
 import { api } from "~/utils/api";
-import AuburnCupolaFilled from "~/components/svgs/AuburnCupolaFilled";
-import AuburnCupola from "~/components/svgs/AuburnCupola";
 import MainSearchBar from "~/components/MainSearchBar";
 import { useState } from "react";
 
@@ -22,50 +20,52 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="blueGraphPaper font-caveat flex min-h-screen p-2 sm:p-8">
-        <div className="flex w-full flex-col gap-8 border border-white text-white">
-          <div className="flex items-center justify-between p-6">
-            <h6 className="font-light tracking-wide">No. 3259302</h6>
-            <h6 className="font-light tracking-wide">
-              Patented Oct. 29, 1995.
-            </h6>
-          </div>
-          <div className="flex w-full items-start justify-center">
-            <h1 className="text-5xl font-bold tracking-wide underline underline-offset-8">
-              RateMyCoop
-            </h1>
-          </div>
-          <div className="flex w-full grow justify-center">
-            <div className="flex w-full max-w-3xl flex-col items-center gap-12 rounded-lg  px-8 py-6">
-              <div className="flex w-full flex-col items-center gap-6">
-                <h2 className="text-lg text-white sm:text-2xl">
-                  Find a Cupola Ambassador at Auburn University
-                </h2>
-                <MainSearchBar
-                  value={value}
-                  setValue={setValue}
-                  className="w-full"
-                />
-              </div>
-              <div className="flex w-full flex-col items-center justify-between gap-6 text-5xl tracking-wide text-white sm:flex-row sm:gap-0 sm:text-7xl">
-                <h5>Promote.</h5>
-                <h5>Unify.</h5>
-                <h5>Serve.</h5>
-              </div>
-            </div>
-          </div>
-          <footer className="flex w-full flex-col-reverse items-baseline gap-2 p-6 sm:flex-row sm:justify-between sm:gap-0 sm:p-0">
-            <div className="sm:py-2 sm:pl-6">
-              © 2023 Samuel Ginn College of Engineering
-            </div>
-            <div className="flex items-baseline border-white tracking-wide text-white underline sm:border-l sm:border-t sm:px-6 sm:py-2">
-              <h6>
-                Architect:{" "}
-                <Link href="/" className="text-2xl">
-                  Trevor Aupperle
-                </Link>
+        <div className="cupolaBlueprint flex w-full">
+          <div className="flex w-full flex-col gap-8 border border-white text-white">
+            <div className="flex items-center justify-between p-6">
+              <h6 className="font-light tracking-wide">No. 3259302</h6>
+              <h6 className="font-light tracking-wide">
+                Patented Oct. 29, 1995.
               </h6>
             </div>
-          </footer>
+            <div className="flex w-full items-start justify-center">
+              <h1 className="text-5xl font-bold tracking-wide underline underline-offset-8">
+                RateMyCoop
+              </h1>
+            </div>
+            <div className="flex w-full grow justify-center">
+              <div className="flex w-full max-w-3xl flex-col items-center gap-12 rounded-lg  px-8 py-6">
+                <div className="flex w-full flex-col items-center gap-6">
+                  <h2 className="text-lg text-white sm:text-2xl">
+                    Find a Cupola Ambassador at Auburn University
+                  </h2>
+                  <MainSearchBar
+                    value={value}
+                    setValue={setValue}
+                    className="w-full"
+                  />
+                </div>
+                <div className="flex w-full flex-col items-center justify-between gap-6 text-5xl tracking-wide text-white sm:flex-row sm:gap-0 sm:text-7xl">
+                  <h5>Promote.</h5>
+                  <h5>Unify.</h5>
+                  <h5>Serve.</h5>
+                </div>
+              </div>
+            </div>
+            <footer className="flex w-full flex-col-reverse items-baseline gap-2 p-6 sm:flex-row sm:justify-between sm:gap-0 sm:p-0">
+              <div className="sm:py-2 sm:pl-6">
+                © 2023 Samuel Ginn College of Engineering
+              </div>
+              <div className="flex items-baseline border-white tracking-wide text-white underline sm:border-l sm:border-t sm:px-6 sm:py-2">
+                <h6>
+                  Architect:{" "}
+                  <Link href="/" className="text-2xl">
+                    Trevor Aupperle
+                  </Link>
+                </h6>
+              </div>
+            </footer>
+          </div>
         </div>
       </main>
     </>
