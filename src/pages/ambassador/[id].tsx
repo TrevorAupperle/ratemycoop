@@ -8,7 +8,7 @@ import {
   ChevronDownIcon,
   FlagIcon as FlagIconSolid,
 } from "@heroicons/react/20/solid";
-import { FlagIcon } from "@heroicons/react/24/outline";
+import { BarsArrowDownIcon, FlagIcon } from "@heroicons/react/24/outline";
 import { Menu, Transition } from "@headlessui/react";
 import Navbar from "~/components/Navbar";
 import Footer from "~/components/Footer";
@@ -188,7 +188,7 @@ const Ambassador = () => {
               <RatingBars ratings={[80, 10, 8, 2, 0]} />
             </div>
             <div className="w-full">
-              <div className="flex items-center justify-between border-b border-gray-200 pb-4">
+              <div className="flex items-center justify-between gap-4 border-b border-gray-200 pb-4 sm:gap-0">
                 <h6 className="text-lg font-bold">Ratings</h6>
                 <div className="flex items-center">
                   <div className="relative">
@@ -211,10 +211,16 @@ const Ambassador = () => {
                   </div>
                   <Menu as="div" className="relative inline-block text-left">
                     <div>
-                      <Menu.Button className="inline-flex w-full justify-center rounded-r-md border-y border-r border-gray-300 px-4 py-2 text-sm font-medium text-auburnBlue-900 hover:bg-gray-100 focus-visible:ring-2 focus-visible:ring-white/75">
+                      <Menu.Button className="hidden w-full justify-center rounded-r-md border-y border-r border-gray-300 px-4 py-2 text-sm font-medium text-auburnBlue-900 hover:bg-gray-100 focus-visible:ring-2 focus-visible:ring-white/75 sm:inline-flex">
                         Sort
                         <ChevronDownIcon
                           className="-mr-1 ml-2 h-5 w-5 text-gray-300 hover:text-gray-400"
+                          aria-hidden="true"
+                        />
+                      </Menu.Button>
+                      <Menu.Button className="inline-flex w-full justify-center rounded-r-md border-y border-r border-gray-300 px-4 py-2 text-sm font-medium text-auburnBlue-900 hover:bg-gray-100 focus-visible:ring-2 focus-visible:ring-white/75 sm:hidden">
+                        <BarsArrowDownIcon
+                          className="h-5 w-5 text-gray-500 hover:text-gray-400"
                           aria-hidden="true"
                         />
                       </Menu.Button>
