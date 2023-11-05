@@ -2,11 +2,8 @@ import Head from "next/head";
 import Link from "next/link";
 
 import MainSearchBar from "~/components/MainSearchBar";
-import { useState } from "react";
 
 export default function Home() {
-  const [value, setValue] = useState("");
-
   return (
     <>
       <Head>
@@ -36,11 +33,7 @@ export default function Home() {
                   <h2 className="text-lg text-white sm:text-2xl">
                     Find a Cupola Ambassador at Auburn University
                   </h2>
-                  <MainSearchBar
-                    value={value}
-                    setValue={setValue}
-                    className="w-full"
-                  />
+                  <MainSearchBar className="w-full" textSize="text-xl" />
                 </div>
                 <div className="flex w-full flex-col items-center justify-between gap-6 text-5xl tracking-wide text-white sm:flex-row sm:gap-0 sm:text-7xl">
                   <h5>Promote.</h5>
