@@ -1,14 +1,11 @@
 import Head from "next/head";
 import Link from "next/link";
 
-import { api } from "~/utils/api";
 import MainSearchBar from "~/components/MainSearchBar";
 import { useState } from "react";
 
 export default function Home() {
   const [value, setValue] = useState("");
-
-  const hello = api.post.hello.useQuery({ text: "from tRPC" });
 
   return (
     <>

@@ -2,7 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import RatingBars from "~/components/RatingBars";
 import {
   ChevronDownIcon,
@@ -12,168 +12,109 @@ import { BarsArrowDownIcon, FlagIcon } from "@heroicons/react/24/outline";
 import { Menu, Transition } from "@headlessui/react";
 import Navbar from "~/components/Navbar";
 import Footer from "~/components/Footer";
-
-type Major =
-  | "Undecided"
-  | "Aerospace"
-  | "Biosystems"
-  | "Chemical"
-  | "Civil and Environmental"
-  | "Computer Science"
-  | "Software"
-  | "Electrical"
-  | "Computer"
-  | "Industrial and Systems"
-  | "Materials"
-  | "Mechanical";
-
-type Review = {
-  id: number;
-  date: Date;
-  majors: Major[];
-  rating: number;
-  knowledgeRating: number;
-  wouldRecommend: boolean;
-  jokes?: boolean;
-  friendly?: boolean;
-  inspirational?: boolean;
-  easyCommunication?: boolean;
-  review: string;
-};
-
-type Ambassador = {
-  id: number;
-  name: string;
-  major: Major;
-  year: number;
-  reviews: Review[];
-};
-
-const fakeReviews: Review[] = [
-  {
-    id: 1,
-    date: new Date(),
-    majors: ["Software", "Mechanical"],
-    rating: 5,
-    knowledgeRating: 5,
-    wouldRecommend: true,
-    jokes: true,
-    friendly: true,
-    inspirational: true,
-    easyCommunication: true,
-    review:
-      "Our tour guide was very friendly and knowledgeable! We had a great time at Auburn and learned a lot about the engineering program. Trevor even told us some jokes!",
-  },
-  {
-    id: 2,
-    date: new Date(),
-    majors: ["Software", "Mechanical"],
-    rating: 5,
-    knowledgeRating: 5,
-    wouldRecommend: true,
-    jokes: true,
-    friendly: true,
-    inspirational: true,
-    easyCommunication: true,
-    review:
-      "Our tour guide was very friendly and knowledgeable! We had a great time at Auburn and learned a lot about the engineering program. Trevor even told us some jokes!",
-  },
-  {
-    id: 3,
-    date: new Date(),
-    majors: ["Software", "Mechanical"],
-    rating: 5,
-    knowledgeRating: 5,
-    wouldRecommend: true,
-    jokes: true,
-    friendly: true,
-    inspirational: true,
-    easyCommunication: true,
-    review:
-      "Our tour guide was very friendly and knowledgeable! We had a great time at Auburn and learned a lot about the engineering program. Trevor even told us some jokes!",
-  },
-  {
-    id: 4,
-    date: new Date(),
-    majors: ["Software", "Mechanical"],
-    rating: 5,
-    knowledgeRating: 5,
-    wouldRecommend: true,
-    jokes: true,
-    friendly: true,
-    inspirational: true,
-    easyCommunication: true,
-    review:
-      "Our tour guide was very friendly and knowledgeable! We had a great time at Auburn and learned a lot about the engineering program. Trevor even told us some jokes!",
-  },
-  {
-    id: 5,
-    date: new Date(),
-    majors: ["Software", "Mechanical"],
-    rating: 5,
-    knowledgeRating: 5,
-    wouldRecommend: true,
-    jokes: true,
-    friendly: true,
-    inspirational: true,
-    easyCommunication: true,
-    review:
-      "Our tour guide was very friendly and knowledgeable! We had a great time at Auburn and learned a lot about the engineering program. Trevor even told us some jokes!",
-  },
-];
-
-const fakePerson: Ambassador = {
-  id: 1,
-  name: "Trevor Aupperle",
-  major: "Software",
-  year: 2023,
-  reviews: fakeReviews,
-};
+import { api } from "~/utils/api";
+import ambassadorCalulations, {
+  type AmbassadorCalulations,
+} from "~/utils/ambassadorCalculations";
 
 const Ambassador = () => {
   const router = useRouter();
   const { id } = router.query;
+  const [ambassadorId, setAmbassadorId] = useState<number>(-1);
+  const [ambassadorCals, setAmbassadorCals] = useState<AmbassadorCalulations>();
+
+  const ambassador = api.ambassador.getAmbassador.useQuery({
+    id: ambassadorId,
+  });
+
+  useEffect(() => {
+    if (typeof id === "string") {
+      const parsedId = parseInt(id);
+      if (!isNaN(parsedId)) {
+        setAmbassadorId(parsedId);
+      }
+    } else if (Array.isArray(id)) {
+      setAmbassadorId(-1);
+    } else {
+      setAmbassadorId(-1);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (ambassador.data) {
+      setAmbassadorCals(ambassadorCalulations(ambassador.data.ratings));
+    }
+  }, [ambassador.data]);
 
   const [ratingSearchValue, setRatingSearchValue] = useState("");
   const [reportButtonHovered, setReportButtonHovered] = useState(-1);
 
+  const filteredRatings =
+    ratingSearchValue === ""
+      ? ambassador.data?.ratings
+      : ambassador.data?.ratings.filter(
+          (rating) =>
+            rating.review
+              .toLowerCase()
+              .includes(ratingSearchValue.toLowerCase()) ||
+            rating.majors
+              .map((major) => major.name)
+              .join(", ")
+              .toLowerCase()
+              .includes(ratingSearchValue.toLowerCase()),
+        );
+
   return (
     <>
       <Head>
-        <title>{fakePerson.name} | RateMyCoop</title>
+        <title>{ambassador.data?.name} | RateMyCoop</title>
         <meta name="description" content="Generated by create-t3-app" />
         <meta name="theme-color" content="#0b2341" />
         <meta name="apple-mobile-web-app-status-bar-style" content="#0b2341" />
         <link rel="icon" href="/AuburnCupola.ico" />
       </Head>
-      <div className="flex flex-col gap-8">
+      <div className="flex min-h-screen flex-col gap-8">
         <Navbar />
-        <div className="flex flex-col items-center px-6">
+        <div className="flex grow flex-col items-center px-6">
           <div className="flex w-full max-w-7xl flex-col gap-16 sm:flex-row">
             <div className="flex flex-col gap-4 text-auburnBlue-900 sm:w-1/2 ">
               <div className="flex flex-col gap-1">
-                <h2 className="text-3xl font-bold">Trevor Aupperle</h2>
+                <h2 className="text-3xl font-bold">{ambassador.data?.name}</h2>
                 <h3 className="text-lg text-auburnOrange-900">
-                  Software Engineering
+                  {ambassador.data?.major.name} Engineering
                 </h3>
               </div>
               <div className="flex items-start gap-2 font-bold">
-                <div className="text-5xl">4.3</div>
+                <div className="text-5xl">
+                  {ambassador.data?.ratings.length === 0
+                    ? "--"
+                    : ambassadorCals?.overallAverage}
+                </div>
                 <div className="text-lg text-gray-400">/ 5</div>
               </div>
               <div className="text-sm">
                 Overall rating based on{" "}
-                <span className="font-bold">5 ratings</span>
+                <span className="font-bold">
+                  {ambassador.data?.ratings.length} ratings
+                </span>
               </div>
               <div className="h-[1px] w-full bg-gray-300"></div>
               <div className="flex w-full items-center justify-center gap-4">
                 <div className="flex flex-col items-center">
-                  <div className="text-2xl font-bold">97%</div>
+                  <div className="text-2xl font-bold">
+                    {ambassador.data?.ratings.length === 0
+                      ? "--"
+                      : ambassadorCals?.recommendPercentage + "%"}
+                  </div>
                   <div className="text-sm text-gray-700">Would recommend</div>
                 </div>
                 <div className="h-full min-h-[48px] w-[1px] bg-gray-300"></div>
                 <div className="flex flex-col items-center">
-                  <div className="text-2xl font-bold">4.5</div>
+                  <div className="text-2xl font-bold">
+                    {ambassador.data?.ratings.length === 0
+                      ? "--"
+                      : ambassadorCals?.knowledgeAverage}
+                  </div>
                   <div className="text-sm text-gray-700">
                     Level of knowledge
                   </div>
@@ -183,9 +124,11 @@ const Ambassador = () => {
                 href="/"
                 className="rounded-md bg-auburnOrange-800 px-4 py-2 text-center text-white hover:bg-auburnOrange-900"
               >
-                Rate Trevor Aupperle
+                Rate {ambassador.data?.name}
               </Link>
-              <RatingBars ratings={[80, 10, 8, 2, 0]} />
+              <RatingBars
+                ratings={ambassadorCals?.ratingsDistribution ?? [0, 0, 0, 0, 0]}
+              />
             </div>
             <div className="w-full">
               <div className="flex items-center justify-between gap-4 border-b border-gray-200 pb-4 sm:gap-0">
@@ -298,7 +241,20 @@ const Ambassador = () => {
               </div>
 
               <div className="flex flex-col gap-6 py-4">
-                {fakeReviews.map((review) => (
+                {ambassador.data?.ratings.length === 0 && (
+                  <div className="relative -z-10 flex h-[300px] w-full flex-col-reverse items-center">
+                    <Image
+                      src="/svgs/Plan.svg"
+                      objectFit="fill"
+                      layout="fill"
+                      alt="No ratings illustration"
+                    />
+                    <div className="text-lg font-bold text-auburnBlue-900">
+                      No ratings yet. Be the first to give one!
+                    </div>
+                  </div>
+                )}
+                {filteredRatings?.map((review) => (
                   <div
                     key={review.id}
                     className="flex flex-col gap-2 rounded-md bg-gray-50 p-4 text-auburnBlue-900 shadow shadow-auburnBlue-50 sm:gap-4"
@@ -306,10 +262,10 @@ const Ambassador = () => {
                     <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center sm:gap-0">
                       <div className="flex flex-col gap-1">
                         <div className="text-lg font-bold">
-                          {review.majors.join(", ")}
+                          {review.majors.map((major) => major.name).join(", ")}
                         </div>
                         <div className="text-sm">
-                          {review.date.toLocaleDateString("en-us", {
+                          {review.createdAt.toLocaleDateString("en-us", {
                             year: "numeric",
                             month: "long",
                             day: "numeric",
