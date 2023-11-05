@@ -2,27 +2,21 @@ import Link from "next/link";
 import { Fragment, useState } from "react";
 import AuburnCupola from "./svgs/AuburnCupola";
 import { Transition } from "@headlessui/react";
-
-type Ambassador = { id: number; name: string };
-
-const people: Ambassador[] = [
-  { id: 1, name: "Wade Cooper" },
-  { id: 2, name: "Arlene Mccoy" },
-  { id: 3, name: "Devon Webb" },
-  { id: 4, name: "Tom Cook" },
-  { id: 5, name: "Tanya Fox" },
-  { id: 6, name: "Hellen Schmidt" },
-];
+import { api } from "~/utils/api";
 
 const Navbar = () => {
   const [searchValue, setSearchValue] = useState("");
   const [searchBarFocused, setSearchBarFocused] = useState(false);
 
+  const ambassadorNames = api.ambassador.getNames.useQuery();
+
   const filteredAmbassadors =
     searchValue === ""
-      ? people
-      : people.filter((person) =>
-          person.name
+      ? ambassadorNames.data ?? []
+      : ambassadorNames.data === undefined
+      ? []
+      : ambassadorNames.data.filter((ambassador) =>
+          ambassador.name
             .toLowerCase()
             .replace(/\s+/g, "")
             .includes(searchValue.toLowerCase().replace(/\s+/g, "")),
@@ -71,7 +65,7 @@ const Navbar = () => {
                 )}
                 {filteredAmbassadors.map((person) => (
                   <li key={person.id}>
-                    <Link href={`/ambassadors/${person.id}`}>
+                    <Link href={`/ambassador/${person.id}`}>
                       <div className="block px-4 py-4 hover:bg-gray-50">
                         <div className="flex items-center justify-between">
                           <div className="text-sm font-medium text-auburnBlue-900">
