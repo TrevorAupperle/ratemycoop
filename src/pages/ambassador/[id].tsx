@@ -23,9 +23,12 @@ const Ambassador = () => {
   const [ambassadorId, setAmbassadorId] = useState<number>(-1);
   const [ambassadorCals, setAmbassadorCals] = useState<AmbassadorCalulations>();
 
-  const ambassador = api.ambassador.getAmbassador.useQuery({
-    id: ambassadorId,
-  });
+  const ambassador = api.ambassador.getAmbassador.useQuery(
+    {
+      id: ambassadorId,
+    },
+    { refetchOnWindowFocus: false },
+  );
 
   useEffect(() => {
     if (typeof id === "string") {
@@ -57,11 +60,11 @@ const Ambassador = () => {
             rating.review
               .toLowerCase()
               .includes(ratingSearchValue.toLowerCase()) ||
-            rating.majors
-              .map((major) => major.name)
-              .join(", ")
-              .toLowerCase()
-              .includes(ratingSearchValue.toLowerCase()),
+            rating.MajorRatings.map((majorRating) =>
+              majorRating.major.name
+                .toLowerCase()
+                .includes(ratingSearchValue.toLowerCase()),
+            ),
         );
 
   return (
@@ -81,7 +84,9 @@ const Ambassador = () => {
               <div className="flex flex-col gap-1">
                 <h2 className="text-3xl font-bold">{ambassador.data?.name}</h2>
                 <h3 className="text-lg text-auburnOrange-900">
-                  {ambassador.data?.major.name} Engineering
+                  {ambassador.data?.major.id === 6
+                    ? ambassador.data?.major.name
+                    : ambassador.data?.major.name + " Engineering"}
                 </h3>
               </div>
               <div className="flex items-start gap-2 font-bold">
@@ -121,7 +126,7 @@ const Ambassador = () => {
                 </div>
               </div>
               <Link
-                href="/"
+                href={`/add/${ambassador.data?.id}`}
                 className="rounded-md bg-auburnOrange-800 px-4 py-2 text-center text-white hover:bg-auburnOrange-900"
               >
                 Rate {ambassador.data?.name}
@@ -262,7 +267,9 @@ const Ambassador = () => {
                     <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center sm:gap-0">
                       <div className="flex flex-col gap-1">
                         <div className="text-lg font-bold">
-                          {review.majors.map((major) => major.name).join(", ")}
+                          {review.MajorRatings.map(
+                            (majorRating) => majorRating.major.name,
+                          ).join(", ")}
                         </div>
                         <div className="text-sm">
                           {review.createdAt.toLocaleDateString("en-us", {

@@ -15,7 +15,9 @@ const MainSearchBar = ({
   const [searchValue, setSearchValue] = useState("");
   const [searchBarFocused, setSearchBarFocused] = useState(false);
 
-  const ambassadorNames = api.ambassador.getNames.useQuery();
+  const ambassadorNames = api.ambassador.getNames.useQuery(undefined, {
+    refetchOnWindowFocus: false,
+  });
 
   const filteredAmbassadors =
     searchValue === ""

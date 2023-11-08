@@ -8,6 +8,17 @@ export const ambassadorRouter = createTRPCRouter({
     });
   }),
 
+  getAmbassadorName: publicProcedure
+    .input(z.object({ id: z.number() }))
+    .query(({ ctx, input }) => {
+      return ctx.db.ambassador.findUnique({
+        where: { id: input.id },
+        select: {
+          name: true,
+        },
+      });
+    }),
+
   getAmbassador: publicProcedure
     .input(z.object({ id: z.number() }))
     .query(({ ctx, input }) => {
@@ -18,23 +29,10 @@ export const ambassadorRouter = createTRPCRouter({
           name: true,
           major: true,
           ratings: {
-            select: {
-              id: true,
-              createdAt: true,
-              majors: true,
-              rating: true,
-              knowledgeRating: true,
-              wouldRecommend: true,
-              jokes: true,
-              friendly: true,
-              inspirational: true,
-              easyCommunication: true,
-              review: true,
-              reports: true,
-              removed: true,
-              moderated: true,
-              ambassadorId: true,
+            include: {
+              MajorRatings: { include: { major: true } },
             },
+            orderBy: { createdAt: "desc" },
           },
         },
       });
