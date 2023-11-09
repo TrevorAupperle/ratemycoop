@@ -121,14 +121,14 @@ const AddRating = () => {
       <div className="flex min-h-screen flex-col text-auburnBlue-900">
         <Navbar />
         <div className="flex w-full flex-col items-center py-4 shadow">
-          <div className="w-full max-w-7xl">
+          <div className="w-full max-w-5xl px-6 lg:px-0">
             <h2 className="text-xl font-bold">
               Rating: {ambassador.data?.name}
             </h2>
           </div>
         </div>
         <div className="mt-6 flex w-full flex-col items-center pb-8">
-          <div className="w-full max-w-5xl">
+          <div className="w-full max-w-5xl px-6 lg:px-0">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-2">
                 <div className="font-semibold">
@@ -141,7 +141,7 @@ const AddRating = () => {
                   setSelected={setSelectedMajors}
                 />
               </div>
-              <div className="flex w-2/3 flex-col gap-2">
+              <div className="flex w-full flex-col gap-2 lg:w-2/3">
                 <div className="font-semibold">
                   Rate your Cupola ambassador{" "}
                   <span className="text-red-500">*</span>
@@ -151,7 +151,7 @@ const AddRating = () => {
                   setRating={setOverallRating}
                 />
               </div>
-              <div className="flex w-2/3 flex-col gap-2">
+              <div className="flex w-full flex-col gap-2 lg:w-2/3">
                 <div className="font-semibold">
                   Rate your Cupola ambassador&apos;s knowledge on the College of
                   Engineering <span className="text-red-500">*</span>
@@ -161,7 +161,7 @@ const AddRating = () => {
                   setRating={setKnowledgeRating}
                 />
               </div>
-              <div className="flex w-1/2 flex-col gap-2">
+              <div className="flex w-full flex-col gap-2 lg:w-1/2">
                 <div className="font-semibold">
                   Would you recommend this ambassador to someone else?{" "}
                   <span className="text-red-500">*</span>
@@ -171,14 +171,14 @@ const AddRating = () => {
                   setSelected={setWouldRecommend}
                 />
               </div>
-              <div className="flex w-1/2 flex-col gap-2">
+              <div className="flex w-full flex-col gap-2 lg:w-1/2">
                 <div className="font-semibold">
                   Select tags that describe your ambassador
                 </div>
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 overflow-auto">
                   <button
                     className={classNames(
-                      "rounded-full px-4 py-2 text-sm",
+                      "whitespace-nowrap rounded-full px-4 py-2 text-sm",
                       jokes
                         ? "bg-auburnBlue-900 text-white"
                         : "bg-gray-200 text-auburnBlue-900",
@@ -189,7 +189,7 @@ const AddRating = () => {
                   </button>
                   <button
                     className={classNames(
-                      "rounded-full px-4 py-2 text-sm",
+                      "text-s whitespace-nowrap rounded-full px-4 py-2",
                       friendly
                         ? "bg-auburnBlue-900 text-white"
                         : "bg-gray-200 text-auburnBlue-900",
@@ -200,7 +200,7 @@ const AddRating = () => {
                   </button>
                   <button
                     className={classNames(
-                      "rounded-full px-4 py-2 text-sm",
+                      "whitespace-nowrap rounded-full px-4 py-2 text-sm",
                       inspirational
                         ? "bg-auburnBlue-900 text-white"
                         : "bg-gray-200 text-auburnBlue-900",
@@ -211,7 +211,7 @@ const AddRating = () => {
                   </button>
                   <button
                     className={classNames(
-                      "rounded-full px-4 py-2 text-sm",
+                      "whitespace-nowrap rounded-full px-4 py-2 text-sm",
                       easyCommunication
                         ? "bg-auburnBlue-900 text-white"
                         : "bg-gray-200 text-auburnBlue-900",
@@ -222,7 +222,7 @@ const AddRating = () => {
                   </button>
                 </div>
               </div>
-              <div className="flex w-2/3 flex-col gap-2">
+              <div className="flex w-full flex-col gap-2 lg:w-2/3">
                 <div className="font-semibold">
                   Write a review <span className="text-red-500">*</span>
                 </div>
@@ -235,16 +235,16 @@ const AddRating = () => {
                   setCheckingProfanity={setCheckingProfanity}
                 />
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex w-full items-center gap-4 sm:w-1/2 lg:w-full">
                 <Link
                   href={`/ambassadors/${ambassadorId}`}
-                  className="rounded-md bg-gray-200 px-4 py-2 text-sm font-semibold text-auburnBlue-900"
+                  className="w-full rounded-md bg-gray-200 px-4 py-2 text-center text-sm font-semibold text-auburnBlue-900 lg:w-fit"
                 >
                   Cancel
                 </Link>
                 <button
                   className={classNames(
-                    "rounded-md bg-auburnOrange-900 px-4 py-2 text-sm font-semibold text-white",
+                    "w-full rounded-md bg-auburnOrange-900 px-4 py-2 text-center text-sm font-semibold text-white lg:w-fit",
                     !submitCheck ? "cursor-not-allowed opacity-50" : "",
                   )}
                   disabled={!submitCheck}

@@ -79,61 +79,69 @@ const Ambassador = () => {
       <div className="flex min-h-screen flex-col gap-8">
         <Navbar />
         <div className="flex grow flex-col items-center px-6">
-          <div className="flex w-full max-w-7xl flex-col gap-16 sm:flex-row">
-            <div className="flex flex-col gap-4 text-auburnBlue-900 sm:w-1/2 ">
-              <div className="flex flex-col gap-1">
-                <h2 className="text-3xl font-bold">{ambassador.data?.name}</h2>
-                <h3 className="text-lg text-auburnOrange-900">
-                  {ambassador.data?.major.id === 6
-                    ? ambassador.data?.major.name
-                    : ambassador.data?.major.name + " Engineering"}
-                </h3>
-              </div>
-              <div className="flex items-start gap-2 font-bold">
-                <div className="text-5xl">
-                  {ambassador.data?.ratings.length === 0
-                    ? "--"
-                    : ambassadorCals?.overallAverage}
+          <div className="flex w-full max-w-7xl flex-col gap-16 lg:flex-row">
+            <div className="flex flex-col gap-4 text-auburnBlue-900 sm:flex-row lg:w-1/2 lg:flex-col ">
+              <div className="flex w-2/3 flex-col gap-4">
+                <div className="flex flex-col gap-1">
+                  <h2 className="text-3xl font-bold">
+                    {ambassador.data?.name}
+                  </h2>
+                  <h3 className="text-lg text-auburnOrange-900">
+                    {ambassador.data?.major.id === 6
+                      ? ambassador.data?.major.name
+                      : ambassador.data?.major.name + " Engineering"}
+                  </h3>
                 </div>
-                <div className="text-lg text-gray-400">/ 5</div>
-              </div>
-              <div className="text-sm">
-                Overall rating based on{" "}
-                <span className="font-bold">
-                  {ambassador.data?.ratings.length} ratings
-                </span>
-              </div>
-              <div className="h-[1px] w-full bg-gray-300"></div>
-              <div className="flex w-full items-center justify-center gap-4">
-                <div className="flex flex-col items-center">
-                  <div className="text-2xl font-bold">
+                <div className="flex items-start gap-2 font-bold">
+                  <div className="text-5xl">
                     {ambassador.data?.ratings.length === 0
                       ? "--"
-                      : ambassadorCals?.recommendPercentage + "%"}
+                      : ambassadorCals?.overallAverage}
                   </div>
-                  <div className="text-sm text-gray-700">Would recommend</div>
+                  <div className="text-lg text-gray-400">/ 5</div>
                 </div>
-                <div className="h-full min-h-[48px] w-[1px] bg-gray-300"></div>
-                <div className="flex flex-col items-center">
-                  <div className="text-2xl font-bold">
-                    {ambassador.data?.ratings.length === 0
-                      ? "--"
-                      : ambassadorCals?.knowledgeAverage}
-                  </div>
-                  <div className="text-sm text-gray-700">
-                    Level of knowledge
-                  </div>
+                <div className="text-sm">
+                  Overall rating based on{" "}
+                  <span className="font-bold">
+                    {ambassador.data?.ratings.length} ratings
+                  </span>
                 </div>
               </div>
-              <Link
-                href={`/add/${ambassador.data?.id}`}
-                className="rounded-md bg-auburnOrange-800 px-4 py-2 text-center text-white hover:bg-auburnOrange-900"
-              >
-                Rate {ambassador.data?.name}
-              </Link>
-              <RatingBars
-                ratings={ambassadorCals?.ratingsDistribution ?? [0, 0, 0, 0, 0]}
-              />
+              <div className="flex w-full flex-col gap-4">
+                <div className="h-[1px] w-full bg-gray-300 sm:hidden lg:block"></div>
+                <div className="flex w-full items-center justify-center gap-4">
+                  <div className="flex flex-col items-center">
+                    <div className="text-2xl font-bold">
+                      {ambassador.data?.ratings.length === 0
+                        ? "--"
+                        : ambassadorCals?.recommendPercentage + "%"}
+                    </div>
+                    <div className="text-sm text-gray-700">Would recommend</div>
+                  </div>
+                  <div className="h-full min-h-[48px] w-[1px] bg-gray-300"></div>
+                  <div className="flex flex-col items-center">
+                    <div className="text-2xl font-bold">
+                      {ambassador.data?.ratings.length === 0
+                        ? "--"
+                        : ambassadorCals?.knowledgeAverage}
+                    </div>
+                    <div className="text-sm text-gray-700">
+                      Level of knowledge
+                    </div>
+                  </div>
+                </div>
+                <Link
+                  href={`/add/${ambassador.data?.id}`}
+                  className="rounded-md bg-auburnOrange-800 px-4 py-2 text-center text-white hover:bg-auburnOrange-900"
+                >
+                  Rate {ambassador.data?.name}
+                </Link>
+                <RatingBars
+                  ratings={
+                    ambassadorCals?.ratingsDistribution ?? [0, 0, 0, 0, 0]
+                  }
+                />
+              </div>
             </div>
             <div className="w-full">
               <div className="flex items-center justify-between gap-4 border-b border-gray-200 pb-4 sm:gap-0">

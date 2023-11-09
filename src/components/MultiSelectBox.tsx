@@ -23,7 +23,7 @@ const MultiSelectBox = ({
   };
 
   return (
-    <div className="relative w-1/2">
+    <div className="relative w-full sm:w-1/2">
       <button
         className="relative w-full cursor-default rounded-lg bg-white py-4 pl-3 pr-10 text-left ring-2 ring-gray-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-auburnOrange-900 sm:text-sm"
         onClick={() => setIsOpen(!isOpen)}
