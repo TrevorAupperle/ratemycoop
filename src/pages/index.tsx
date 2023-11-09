@@ -61,14 +61,3 @@ export default function Home() {
     </>
   );
 }
-
-{
-  /* <div className="bg-white">
-  <AuburnCupolaFilled
-    width={64}
-    height={64}
-    className="fill-auburnBlue-900 stroke-auburnBlue-900"
-  />
-  <AuburnCupola width={64} height={64} className="stroke-auburnBlue-900" />
-</div>; */
-}

@@ -2,6 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import ErrorMessage from "~/components/ErrorMessage";
 import Footer from "~/components/Footer";
 import MultiSelectBox from "~/components/MultiSelectBox";
 import Navbar from "~/components/Navbar";
@@ -27,6 +28,7 @@ const AddRating = () => {
   const [reviewError, setReviewError] = useState<boolean>(false);
   const [checkingProfanity, setCheckingProfanity] = useState<boolean>(false);
   const [submitCheck, setSubmitCheck] = useState<boolean>(false);
+  const [showSumbitError, setShowSubmitError] = useState<boolean>(false);
 
   const ambassador = api.ambassador.getAmbassadorName.useQuery(
     {
@@ -103,6 +105,14 @@ const AddRating = () => {
         {
           onSuccess: () => {
             void router.push(`/ambassador/${ambassadorId}`);
+          },
+          onError: () => {
+            setTimeout(() => {
+              setShowSubmitError(true);
+            }, 500);
+            setTimeout(() => {
+              setShowSubmitError(false);
+            }, 5000);
           },
         },
       );
@@ -189,7 +199,7 @@ const AddRating = () => {
                   </button>
                   <button
                     className={classNames(
-                      "text-s whitespace-nowrap rounded-full px-4 py-2",
+                      "whitespace-nowrap rounded-full px-4 py-2 text-sm",
                       friendly
                         ? "bg-auburnBlue-900 text-white"
                         : "bg-gray-200 text-auburnBlue-900",
@@ -257,6 +267,11 @@ const AddRating = () => {
           </div>
         </div>
         <Footer />
+        {showSumbitError && (
+          <div className="fixed bottom-3 left-3 right-3 transition-all duration-300 sm:left-auto">
+            <ErrorMessage message="There was an error sumbiting your rating. Please try again." />
+          </div>
+        )}
       </div>
     </>
   );
