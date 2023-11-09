@@ -17,6 +17,7 @@ import ambassadorCalulations, {
   type AmbassadorCalulations,
 } from "~/utils/ambassadorCalculations";
 import SkeletonDiv from "~/components/SkeletonDiv";
+import { type Rating } from "@prisma/client";
 
 const Ambassador = () => {
   const router = useRouter();
@@ -52,21 +53,39 @@ const Ambassador = () => {
 
   const [ratingSearchValue, setRatingSearchValue] = useState("");
   const [reportButtonHovered, setReportButtonHovered] = useState(-1);
+  const [selectedSortOption, setSelectedSortOption] = useState(0);
+
+  const handleSortOption = (option: number) => {
+    switch (option) {
+      case 0:
+        return (a: Rating, b: Rating) =>
+          b.createdAt.getTime() - a.createdAt.getTime();
+      case 1:
+        return (a: Rating, b: Rating) =>
+          a.createdAt.getTime() - b.createdAt.getTime();
+      case 2:
+        return (a: Rating, b: Rating) => b.rating - a.rating;
+      case 3:
+        return (a: Rating, b: Rating) => a.rating - b.rating;
+    }
+  };
 
   const filteredRatings =
     ratingSearchValue === ""
-      ? ambassador.data?.ratings
-      : ambassador.data?.ratings.filter(
-          (rating) =>
-            rating.review
-              .toLowerCase()
-              .includes(ratingSearchValue.toLowerCase()) ||
-            rating.MajorRatings.map((majorRating) =>
-              majorRating.major.name.toLowerCase(),
-            )
-              .join(", ")
-              .includes(ratingSearchValue.toLowerCase()),
-        );
+      ? ambassador.data?.ratings.sort(handleSortOption(selectedSortOption))
+      : ambassador.data?.ratings
+          .filter(
+            (rating) =>
+              rating.review
+                .toLowerCase()
+                .includes(ratingSearchValue.toLowerCase()) ||
+              rating.MajorRatings.map((majorRating) =>
+                majorRating.major.name.toLowerCase(),
+              )
+                .join(", ")
+                .includes(ratingSearchValue.toLowerCase()),
+          )
+          .sort(handleSortOption(selectedSortOption));
 
   return (
     <>
@@ -224,10 +243,11 @@ const Ambassador = () => {
                             {({ active }) => (
                               <button
                                 className={`${
-                                  active
+                                  active || selectedSortOption === 0
                                     ? "bg-auburnBlue-900 text-white"
                                     : "text-auburnBlue-900"
                                 } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                onClick={() => setSelectedSortOption(0)}
                               >
                                 Newest
                               </button>
@@ -237,10 +257,11 @@ const Ambassador = () => {
                             {({ active }) => (
                               <button
                                 className={`${
-                                  active
+                                  active || selectedSortOption === 1
                                     ? "bg-auburnBlue-900 text-white"
                                     : "text-auburnBlue-900"
                                 } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                onClick={() => setSelectedSortOption(1)}
                               >
                                 Oldest
                               </button>
@@ -252,10 +273,11 @@ const Ambassador = () => {
                             {({ active }) => (
                               <button
                                 className={`${
-                                  active
+                                  active || selectedSortOption === 2
                                     ? "bg-auburnBlue-900 text-white"
                                     : "text-auburnBlue-900"
                                 } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                onClick={() => setSelectedSortOption(2)}
                               >
                                 Rating: High to Low
                               </button>
@@ -265,10 +287,11 @@ const Ambassador = () => {
                             {({ active }) => (
                               <button
                                 className={`${
-                                  active
+                                  active || selectedSortOption === 3
                                     ? "bg-auburnBlue-900 text-white"
                                     : "text-auburnBlue-900"
                                 } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                onClick={() => setSelectedSortOption(3)}
                               >
                                 Rating: Low to High
                               </button>
