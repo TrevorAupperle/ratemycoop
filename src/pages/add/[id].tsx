@@ -247,7 +247,7 @@ const AddRating = () => {
               </div>
               <div className="flex w-full items-center gap-4 sm:w-1/2 lg:w-full">
                 <Link
-                  href={`/ambassadors/${ambassadorId}`}
+                  href={`/ambassador/${ambassadorId}`}
                   className="w-full rounded-md bg-gray-200 px-4 py-2 text-center text-sm font-semibold text-auburnBlue-900 lg:w-fit"
                 >
                   Cancel
