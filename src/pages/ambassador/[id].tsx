@@ -16,7 +16,6 @@ import { api } from "~/utils/api";
 import ambassadorCalulations, {
   type AmbassadorCalulations,
 } from "~/utils/ambassadorCalculations";
-import Skeleton from "~/components/Skeleton";
 import SkeletonDiv from "~/components/SkeletonDiv";
 
 const Ambassador = () => {
@@ -63,10 +62,10 @@ const Ambassador = () => {
               .toLowerCase()
               .includes(ratingSearchValue.toLowerCase()) ||
             rating.MajorRatings.map((majorRating) =>
-              majorRating.major.name
-                .toLowerCase()
-                .includes(ratingSearchValue.toLowerCase()),
-            ),
+              majorRating.major.name.toLowerCase(),
+            )
+              .join(", ")
+              .includes(ratingSearchValue.toLowerCase()),
         );
 
   return (
