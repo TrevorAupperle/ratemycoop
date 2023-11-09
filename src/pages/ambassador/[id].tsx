@@ -16,6 +16,8 @@ import { api } from "~/utils/api";
 import ambassadorCalulations, {
   type AmbassadorCalulations,
 } from "~/utils/ambassadorCalculations";
+import Skeleton from "~/components/Skeleton";
+import SkeletonDiv from "~/components/SkeletonDiv";
 
 const Ambassador = () => {
   const router = useRouter();
@@ -83,21 +85,36 @@ const Ambassador = () => {
             <div className="flex flex-col gap-4 text-auburnBlue-900 sm:flex-row lg:w-1/2 lg:flex-col ">
               <div className="flex w-2/3 flex-col gap-4">
                 <div className="flex flex-col gap-1">
-                  <h2 className="text-3xl font-bold">
-                    {ambassador.data?.name}
-                  </h2>
-                  <h3 className="text-lg text-auburnOrange-900">
-                    {ambassador.data?.major.id === 6
-                      ? ambassador.data?.major.name
-                      : ambassador.data?.major.name + " Engineering"}
-                  </h3>
+                  <SkeletonDiv
+                    loading={ambassador.isLoading}
+                    skeletonClassName="h-9 w-full"
+                  >
+                    <h2 className="text-3xl font-bold">
+                      {ambassador.data?.name}
+                    </h2>
+                  </SkeletonDiv>
+                  <SkeletonDiv
+                    loading={ambassador.isLoading}
+                    skeletonClassName="h-7 w-full"
+                  >
+                    <h3 className="text-lg text-auburnOrange-900">
+                      {ambassador.data?.major.id === 6
+                        ? ambassador.data?.major.name
+                        : ambassador.data?.major.name + " Engineering"}
+                    </h3>
+                  </SkeletonDiv>
                 </div>
                 <div className="flex items-start gap-2 font-bold">
-                  <div className="text-5xl">
-                    {ambassador.data?.ratings.length === 0
-                      ? "--"
-                      : ambassadorCals?.overallAverage}
-                  </div>
+                  <SkeletonDiv
+                    loading={ambassador.isLoading}
+                    skeletonClassName="h-12 w-20"
+                  >
+                    <div className="text-5xl">
+                      {ambassador.data?.ratings.length === 0
+                        ? "--"
+                        : ambassadorCals?.overallAverage}
+                    </div>
+                  </SkeletonDiv>
                   <div className="text-lg text-gray-400">/ 5</div>
                 </div>
                 <div className="text-sm">
@@ -110,25 +127,37 @@ const Ambassador = () => {
               <div className="flex w-full flex-col gap-4">
                 <div className="h-[1px] w-full bg-gray-300 sm:hidden lg:block"></div>
                 <div className="flex w-full items-center justify-center gap-4">
-                  <div className="flex flex-col items-center">
-                    <div className="text-2xl font-bold">
-                      {ambassador.data?.ratings.length === 0
-                        ? "--"
-                        : ambassadorCals?.recommendPercentage + "%"}
+                  <SkeletonDiv
+                    loading={ambassador.isLoading}
+                    skeletonClassName="h-12 w-24"
+                  >
+                    <div className="flex flex-col items-center">
+                      <div className="text-2xl font-bold">
+                        {ambassador.data?.ratings.length === 0
+                          ? "--"
+                          : ambassadorCals?.recommendPercentage + "%"}
+                      </div>
+                      <div className="text-sm text-gray-700">
+                        Would recommend
+                      </div>
                     </div>
-                    <div className="text-sm text-gray-700">Would recommend</div>
-                  </div>
+                  </SkeletonDiv>
                   <div className="h-full min-h-[48px] w-[1px] bg-gray-300"></div>
-                  <div className="flex flex-col items-center">
-                    <div className="text-2xl font-bold">
-                      {ambassador.data?.ratings.length === 0
-                        ? "--"
-                        : ambassadorCals?.knowledgeAverage}
+                  <SkeletonDiv
+                    loading={ambassador.isLoading}
+                    skeletonClassName="h-12 w-24"
+                  >
+                    <div className="flex flex-col items-center">
+                      <div className="text-2xl font-bold">
+                        {ambassador.data?.ratings.length === 0
+                          ? "--"
+                          : ambassadorCals?.knowledgeAverage}
+                      </div>
+                      <div className="text-sm text-gray-700">
+                        Level of knowledge
+                      </div>
                     </div>
-                    <div className="text-sm text-gray-700">
-                      Level of knowledge
-                    </div>
-                  </div>
+                  </SkeletonDiv>
                 </div>
                 <Link
                   href={`/add/${ambassador.data?.id}`}
